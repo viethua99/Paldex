@@ -1,15 +1,16 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
+    alias(libs.plugins.cocoapods)
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.pluginSerialization)
     alias(libs.plugins.buildKonfigPlugin)
-    alias(libs.plugins.icerockMobilePlugin)
+    alias(libs.plugins.sqlDelight)
 }
+version = "1.0.0"
 
 kotlin {
     androidTarget {
@@ -47,18 +48,25 @@ kotlin {
             // Koin Dependencies for dependency injection
             implementation(libs.koin.android)
             implementation(libs.koin.workmanager)
+
+            // SQLDelight Dependencies for local database
+            implementation(libs.sqldelight.driver.android)
         }
         iosMain.dependencies {
             // Ktor Dependencies for API network
             implementation(libs.ktor.client.darwin)
-            implementation(libs.moko.resources.core)
 
+            // SQLDelight Dependencies for local database
+            implementation(libs.sqldelight.driver.ios)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
 
             // Ktor Dependencies for API network
             implementation(libs.ktor.client.cio)
+
+            // SQLDelight Dependencies for local database
+            implementation(libs.sqldelight.driver.jvm)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -73,6 +81,8 @@ kotlin {
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.serialization.kotlinx.json)
 
+            implementation(libs.stately.common)
+
             // Koin Dependencies for dependency injection
             implementation(libs.koin.core)
             implementation(libs.koin.compose.multiplatform)
@@ -85,25 +95,33 @@ kotlin {
             // Kamel Dependencies for images loading
             implementation(libs.kamel)
 
-            // Moko Dependencies for resources
-            implementation(libs.moko.resources.compose)
+            // SQLDelight Dependencies for local database
+            implementation(libs.bundles.sqldelight.common)
 
             implementation(libs.accompanist.systemuicontroller)
         }
     }
+
+    cocoapods {
+        framework {
+            isStatic = false // SwiftUI preview requires dynamic framework
+            linkerOpts("-lsqlite3")
+//            export(libs.touchlab.kermit.simple)
+        }
+//        podfile = project.file("../iosApp/Podfile")
+    }
 }
 
 android {
-    namespace = "com.vproject.stablediffusion"
+    namespace = "com.vproject.paldex"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
-    sourceSets["main"].java.srcDirs("build/generated/moko/androidMain/src")
 
     defaultConfig {
-        applicationId = "com.vproject.stablediffusion"
+        applicationId = "com.vproject.paldex"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -140,22 +158,23 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.vproject.stablediffusion"
+            packageName = "com.vproject.paldex"
             packageVersion = "1.0.0"
         }
     }
 }
 
 buildkonfig {
-    packageName = "com.vproject.stablediffusion"
+    packageName = "com.vproject.paldex"
 
     defaultConfigs {
-        buildConfigField(STRING, "STABLE_DIFFUSION_API_KEY", "${project.property("STABLE_DIFFUSION_API_KEY")}")
+
     }
 }
 
-multiplatformResources {
-    multiplatformResourcesPackage = "com.vproject.stablediffusion"
-    multiplatformResourcesClassName = "SharedRes"
+sqldelight {
+    databases.create("PalDatabase") {
+        packageName.set("com.vproject.paldex.database")
+    }
 }
 

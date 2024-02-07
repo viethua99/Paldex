@@ -1,4 +1,4 @@
-rootProject.name = "StableDiffusion"
+rootProject.name = "Paldex"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

@@ -2,7 +2,7 @@
 accompanist = "0.28.0"
 compose = "1.5.4"
 composeMaterial3 = "1.1.2"
-compose-plugin = "1.5.10"
+compose-plugin = "1.5.12"
 compose-compiler = "1.5.4"
 agp = "8.1.4"
 android-minSdk = "24"
@@ -26,7 +26,8 @@ koin-core = "3.5.0"
 voyager = "1.0.0-rc10"
 build-konfig = "0.13.3"
 kamel = "0.7.3"
-moko-resources = "0.23.0"
+sqlDelight = "2.0.1"
+stately-common = "2.0.5"
 
 [libraries]
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -63,9 +64,12 @@ voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.
 voyager-tab-navigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 kamel = { module = "media.kamel:kamel-image", version.ref = "kamel" }
-moko-resources-generator = { module = "dev.icerock.moko:resources-generator", version.ref = "moko-resources" }
-moko-resources-core = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
-moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
+sqldelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
+sqldelight-driver-ios = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
+sqldelight-driver-jvm = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelight" }
+sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
+sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sqlDelight" }
+stately-common = { module = "co.touchlab:stately-common", version.ref = "stately-common" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
@@ -74,4 +78,11 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 pluginSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "plugin-serialization"}
 buildKonfigPlugin = { id = "com.codingfeline.buildkonfig", version.ref = "build-konfig" }
-icerockMobilePlugin = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
+sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
+cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+
+[bundles]
+sqldelight-common = [
+    "sqldelight-runtime",
+    "sqldelight-coroutines"
+]

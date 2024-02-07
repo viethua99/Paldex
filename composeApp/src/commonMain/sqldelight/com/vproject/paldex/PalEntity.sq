@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS palEntity (
+  page INTEGER NOT NULL,
+  name TEXT NOT NULL PRIMARY KEY,
+  key TEXT NOT NULL,
+  imageWiki TEXT NOT NULL
+);
+
+selectAllByPage:
+SELECT *
+FROM palEntity
+WHERE page = :page;
+
+insert:
+INSERT OR REPLACE INTO palEntity(page, name, key, imageWiki)
+VALUES ?;
