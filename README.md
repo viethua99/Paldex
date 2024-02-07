@@ -1,8 +1,5 @@
 ![Paldex](docs/images/project-header.png)
 <p align="center">
-  <a href="https://github.com/viethua99/Paldex/releases">
-     <img src="https://img.shields.io/github/downloads/viethua99/Paldex/total?color=3BB143" alt="Github - viethua99">
-  </a>
 
   <a href="https://opensource.org/licenses/Apache-2.0">
      <img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-brown.svg"/>
